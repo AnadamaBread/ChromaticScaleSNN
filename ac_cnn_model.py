@@ -116,7 +116,7 @@ print(x_train.shape, x_test.shape, x_val.shape, len(y_train), len(y_test), len(y
 # Get features and keeps as labels
 def get_features(data):
     features=[]
-    labels[]
+    labels=[]
 
     data = data.reset_index()
     for i in data.species_id.unique():
