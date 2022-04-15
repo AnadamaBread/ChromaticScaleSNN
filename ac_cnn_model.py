@@ -16,6 +16,8 @@ import warnings
 import librosa 
 import librosa.display
 import pickle 
+import json
+import pprint
 import joblib
 import wave
 import glob
@@ -45,8 +47,6 @@ df_valid = './nsynth_files/nsynth_spec/nsynth_valid'
 df_test = './nsynth_files/nsynth_spec/nsynth_test'
 df_train = './nsynth_files/nsynth_spec/nsynth_train'
 
-
-
 #########################################################
 # Config Settings -- General
 REMOVE_MODEL = True
@@ -57,7 +57,7 @@ N_GPUS = 4
 #########################################################
 # Global Variables -- General
 DS_NAME = 'nsynth'
-OUTPUT_CLASSES = 10 # Default number, will definitely need to change
+OUTPUT_CLASSES = 12 # 12 Chromatic notes of the chromatic scale
 BATCH_SIZE = 128
 EPOCHS = 20
 TRAIN_PERC = 60
