@@ -17,12 +17,14 @@ import librosa
 import librosa.display
 import pickle 
 import joblib
+import wave
+import glob
 
 import numpy as np
 import pandas as pd
 import matplotlib as plt
 import tensorflow as tf
-import tensorflow_datsets as tfds
+import tensorflow_datasets as tfds
 from tensorflow.keras.utils import to_categorical
 # from sklearn.model_selection import train_test_split
 
@@ -31,15 +33,26 @@ from tensorflow.keras.utils import to_categorical
 
 # Dataframe -- Need to parse from NSynth Here
 # df = 'nsynth'
-nsynth_classes = ['guitar', 'flute', 'brass', 'keyboard'] # Instruments 
-nsynth_notes = [] # Notes 
+# nsynth_classes = ['guitar', 'flute', 'brass', 'keyboard'] # Instruments 
+# nsynth_notes = [] # Notes 
+
+# df_valid = pd.read_json('/nsynth-valid/examples.json')
+# df_test = pd.read_json('/nsynth-test/examples.json')
+
+# for filename
+
+df_valid = './nsynth_files/nsynth_spec/nsynth_valid'
+df_test = './nsynth_files/nsynth_spec/nsynth_test'
+df_train = './nsynth_files/nsynth_spec/nsynth_train'
+
+
 
 #########################################################
 # Config Settings -- General
 REMOVE_MODEL = True
 REMOVE_DATA = True
 TRAIN_NEW_MODEL = True
-USE_GPUS = False
+USE_GPUS = True
 N_GPUS = 4
 #########################################################
 # Global Variables -- General
@@ -47,9 +60,9 @@ DS_NAME = 'nsynth'
 OUTPUT_CLASSES = 10 # Default number, will definitely need to change
 BATCH_SIZE = 128
 EPOCHS = 20
-TRAIN_PERC = 128
+TRAIN_PERC = 60
 VAL_PERC = 10
-TEST_PERC = 10
+TEST_PERC = 30
 TRAIN = 'test+train[:{}%]'.format(str(TRAIN_PERC))
 VAL = 'test+train[{}%:{}%]'.format(str(TRAIN_PERC),str(TRAIN_PERC+VAL_PERC))
 TEST = 'test+train[{}%:]'.format(str(TRAIN_PERC+VAL_PERC))
@@ -77,10 +90,10 @@ if os.path.exists(os.path.join(WORKING_DIR, 'y_test.npz')) and REMOVE_DATA:
 if os.path.exists(os.path.join(WORKING_DIR, 'x_norm.npz')) and REMOVE_DATA:
     os.remove(os.path.join(WORKING_DIR, 'x_norm.npz'))
 # Load an Audio File
-sample_num = 1 # File to use
-filename = df.recording_id[sample_num] + str('.flac')
-time_start = df.t_min[sample_num]
-time_end = df.t_max[sample_num]
+# sample_num = 1 # File to use
+# filename = df.recording_id[sample_num] + str('.flac')
+# time_start = df.t_min[sample_num]
+# time_end = df.t_max[sample_num]
 #########################################################
 # GPU USAGE
 # Distribute on multiple GPUS
@@ -246,7 +259,7 @@ def get_features(data):
             # Load file
             y, sample_rate = librosa.load(filename, sr=28000)
             # cut to start and end
-            y_cut = y[int(round(time_start * sample_rate):int(round(time_end * sample_rate))]
+            y_cut = y[int(round(time_start * sample_rate)):int(round(time_end * sample_rate))]
             # generate features & output numpy array
             data = generate_features(y_cut)
             features.append(data[np.newaxis,...])
@@ -266,6 +279,23 @@ x_train = x_train/np.std(x_train)
 x_test = x_test/np.std(x_test)
 y_train = np.array(y_train)
 y_test = np.array(y_test)
+
+##########################################################
+# Callbacks
+checkpoint = tf.keras.callbacks.ModelCheckpoint(
+    filepath=os.path.join(MODEL_OUT_DIR, MODEL_NAME),
+    monitor='val_loss',
+    verbose=1,
+    save_best_only=True,
+    mode='min'
+)
+early_stop = tf.keras.callbacks.EarlyStopping(
+    monitor='val_loss',
+    patience=10,
+    verbose=0,
+    mode='min'
+)
+callbacks = [checkpoint]
 
 #########################################################
 # Convolutional Model
