@@ -11,7 +11,7 @@ Convolution Neural Network with SNN Toolbox integration for Neuromorphic Computi
 
 ### Notes of the Chromatic Scale: A, A#/Bb, B, C, C#/Db, D, D#/Eb, E, F, F#/Gb, G, and G#/Ab.
 
-Chart of pitch frequencies. 
+Chart of pitch frequencies: 
 
 | Note | Octave 0 | Octave 1 | Octave 2|  ...  | Octave 4 |  ...  | Octave 8 |
 | -----| -------- | -------- | ------- | ----- | -------- | ----- | -------- |
@@ -32,6 +32,30 @@ Chart of pitch frequencies.
 
 Octave 4 contains average pitch measurements. The C note in octave 4 is the pitch for the middle key of a standard piano keyboard. Octave 4 will primarily be analyzed in our research. The audible human ear can here frequency pitch ranges between 20Hz and 20,000Hz. 
 
+### Chromatic Scale in Nsynth Dataset    
+  
+
+The Nsynth Dataset uses MIDI scale for velocity and frequency based on a 0-127 range of values. These values are found in the file name of the .wav file for the audio.   
+
+For Octave 4 of the Chromatic Scale, the Pitch MIDI values are as follows:  
+
+| Note | Octave 4 MIDI value |
+| ---- | :-------------------: |
+|  C   |    60 |
+| C#/Db|    61 |   
+|  D   |    62 |
+| D#/Eb|    63 |
+|  E   |    64 |
+|  F   |    65 |
+| F#/Gb|    66 |
+|  G   |    67 |
+| G#/Ab|    68 |
+|  A   |    69 |
+| A#/Bb|    70 |
+|  B   |    71 |
 
 
+*Note: A is the standard concert pitch and C is the middle key pitch
+
+The Velocity MIDI values reflect the generalize "loudness" of the sound. For this project a static measurement of '50' velocity is leveraged for standard consistent sound. The Nsynth dataset commonly contains velocity measurements at values of 25, 50, 75, 100, and 127. 
 
