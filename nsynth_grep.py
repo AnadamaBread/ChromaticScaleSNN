@@ -2,7 +2,6 @@
 # Guitar, Flute, Piano, Brass
 # Only chromatic scale notes (Maybe some bogus data)
 
-
 import os
 import sys
 import wave
@@ -13,7 +12,9 @@ import pylab
 import numpy as np
 import pandas as pd
 import matplotlib as plt
-# import tensorflow as tf
+import tensorflow as tf
+
+from PIL import Image
 # from tensorflow.keras.utils import to_categorical
 # import tensorflow_datasets as tfds
 
@@ -123,16 +124,18 @@ def main():
     """
 
     print("Creating Train Spectrograms...\n")
-    parse_chromatic(id_train, od_train)
+    # parse_chromatic(id_train, od_train)
 
     print("Creating Test Spectrograms...\n")
-    parse_chromatic(id_test, od_test)
+    # parse_chromatic(id_test, od_test)
 
     print("Creating Valid Spectrograms...\n")
-    parse_chromatic(id_valid, od_valid)
+    # parse_chromatic(id_valid, od_valid)
 
 
     print("Done!")
+
+
 
 
 
