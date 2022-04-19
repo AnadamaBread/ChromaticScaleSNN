@@ -281,3 +281,264 @@ model.add(Dense(OUTPUT_CLASSES,activation="softmax"))
 __Model 6 results after 15 epochs:__   
 Based on known audio CNN model. Ran on image sizes of 150x150. Batch Size now 128.   
 Accuracy: 0.0940, loss: 2.5550, train time: 2.25 Minutes.  
+
+## _Model 7_  
+
+Formatting of Models have changed.  
+
+```
+tf_model = tf.keras.Sequential([
+    tf.keras.layers.Conv2D(
+        filters = 32,
+        kernel_size = (3,3),
+        activation = 'relu',
+        padding='same',
+        input_shape = (IMG_HEIGHT, IMG_WIDTH, 3)
+    ),
+    
+    tf.keras.layers.BatchNormalization(),
+    tf.keras.layers.MaxPooling2D((2,2)),
+    tf.keras.layers.BatchNormalization(),
+
+    tf.keras.layers.Conv2D(
+        filters = 64,
+        kernel_size = (3,3),
+        activation = 'relu',
+        padding='same'
+    ),
+    
+    tf.keras.layers.BatchNormalization(),
+    tf.keras.layers.MaxPooling2D((2,2)),
+    tf.keras.layers.BatchNormalization(),
+
+     tf.keras.layers.Conv2D(
+        filters = 128,
+        kernel_size = (3,3),
+        activation = 'relu',
+        padding='same'
+    ),
+
+    tf.keras.layers.BatchNormalization(),
+    tf.keras.layers.MaxPooling2D((2,2)),
+    tf.keras.layers.BatchNormalization(),
+
+
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(256, activation='relu'),
+    tf.keras.layers.BatchNormalization(),
+    # tf.keras.layers.Dense(4096, activation='relu'),
+
+    tf.keras.layers.Dropout(0.5),
+
+
+    tf.keras.layers.Dense(OUTPUT_CLASSES, activation="softmax")
+
+
+])
+```
+
+__Model 7 results after 20 epochs:__   
+Accuracy: 0.9000, loss: 0.3206, train time: 7.15 Minutes.  
+
+## _Stray Model_
+
+```
+# model = Sequential()
+# model.add(Conv2D(
+#     filters = 16,
+#     kernel_size=(3,3),
+#     activation='relu',
+#     padding="same",
+#     input_shape=x_train.shape[1:]
+# ))
+# model.add(tf.keras.layers.MaxPooling2D((2,2)))
+# model.add(Conv2D(
+#     filters = 32,
+#     kernel_size=(3,3),
+#     activation='relu',
+#     padding="same"
+# ))
+# model.add(tf.keras.layers.MaxPooling2D((2,2)))
+# model.add(Conv2D(
+#     filters = 64,
+#     kernel_size=(3,3),
+#     activation='relu',
+#     padding="same"
+# ))
+# model.add(tf.keras.layers.MaxPooling2D((2,2)))
+# model.add(Conv2D(
+#     filters = 64,
+#     kernel_size=(3,3),
+#     activation='relu',
+#     padding="same"
+# ))
+# model.add(tf.keras.layers.MaxPooling2D((2,2)))
+# model.add(Conv2D(
+#     filters = 128,
+#     kernel_size=(3,3),
+#     activation='relu',
+#     padding="same"
+# ))
+# model.add(tf.keras.layers.MaxPooling2D((2,2)))
+
+# model.add(Conv2D(
+#     filters = 128,
+#     kernel_size=(3,3),
+#     activation='relu',
+#     padding="same"
+# ))
+# model.add(tf.keras.layers.MaxPooling2D((2,2)))
+
+# model.add(Flatten())
+# model.add(Dense(128,activation='relu'))
+
+# model.add(Dense(OUTPUT_CLASSES,activation="softmax"))
+
+# model.compile(
+#     optimizer='adam', 
+#     # loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+#     loss=tf.keras.losses.CategoricalCrossentropy(),
+#     metrics=['accuracy']
+# )
+
+
+# model.summary()
+
+# # history = model.fit_generator(
+# #     train_ds,
+# #     steps_per_epoch=len(train_ds),
+# #     epochs=5,
+# #     validation_data=valid_ds,
+# #     # validation_steps=len(valid_ds)
+# # )
+
+# history = model.fit(
+#     x_train, 
+#     y_train, 
+#     epochs=EPOCHS,
+#     verbose=1,
+#     batch_size=BATCH_SIZE, 
+#     # validation_data=(x_test, y_test)
+#     validation_data=(x_val, y_val)
+# )
+
+# # histoy = model.fit(
+# #     train_ds,
+# #     validation_data = valid_ds,
+# #     verbose = 1,
+# #     epochs=EPOCHS
+# # )
+
+# model.save('chromatic_classifier.h5')
+```
+
+
+## _Model 8_
+
+Model build with BatchNormalizations 
+
+```
+tf_model = tf.keras.Sequential([
+    # tf.keras.layers.Rescaling(1./255),
+    tf.keras.layers.Conv2D(
+        filters = 32,
+        kernel_size = (3,3),
+        activation = 'relu',
+        padding='same',
+        input_shape = (IMG_HEIGHT, IMG_WIDTH, 3)
+    ),
+    
+    tf.keras.layers.MaxPooling2D((2,2)),
+    tf.keras.layers.BatchNormalization(),
+
+    tf.keras.layers.Conv2D(
+        filters = 64,
+        kernel_size = (3,3),
+        activation = 'relu',
+        padding='same'
+    ),
+    
+    tf.keras.layers.MaxPooling2D((2,2)),
+    tf.keras.layers.BatchNormalization(),
+
+
+
+     tf.keras.layers.Conv2D(
+        filters = 128,
+        kernel_size = (3,3),
+        activation = 'relu',
+        padding='same'
+    ),
+
+
+    tf.keras.layers.MaxPooling2D((2,2)),
+    tf.keras.layers.BatchNormalization(),
+
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(256, activation='relu'),
+    tf.keras.layers.BatchNormalization(),
+
+    tf.keras.layers.Dropout(0.5),
+
+
+    tf.keras.layers.Dense(OUTPUT_CLASSES, activation="softmax")
+
+
+])
+
+```
+
+__Model 8 results after 20 epochs:__   
+Model based on batch normalization
+Images sizes are 223x221 with 2 nChannels. Batch Size of 128. 
+Accuracy: 0.9600, loss: 0.1106, train time: 7.15 Minutes.  
+
+## _Final Model_
+
+```
+tf_model = tf.keras.Sequential([
+    tf.keras.layers.Conv2D(
+        filters = 32,
+        kernel_size = (3,3),
+        activation = 'relu',
+        padding='same',
+        input_shape = (IMG_HEIGHT, IMG_WIDTH, 3)
+    ),
+    
+    tf.keras.layers.MaxPooling2D((2,2)),
+    tf.keras.layers.Dropout(0.2),
+
+    tf.keras.layers.Conv2D(
+        filters = 64,
+        kernel_size = (3,3),
+        activation = 'relu',
+        padding='same'
+    ),
+    
+    tf.keras.layers.MaxPooling2D((2,2)),
+    tf.keras.layers.Dropout(0.2),
+
+     tf.keras.layers.Conv2D(
+        filters = 128,
+        kernel_size = (3,3),
+        activation = 'relu',
+        padding='same'
+    ),
+
+
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(64, activation='relu'),
+
+    tf.keras.layers.Dropout(0.2),
+    tf.keras.layers.Dense(32, activation='relu'),
+
+
+    tf.keras.layers.Dense(OUTPUT_CLASSES, activation="softmax")
+
+
+])
+```
+__Model Final results after 10 epochs:__   
+Model based on dropout 0.2
+Images sizes are 223x221 with 2 nChannels. Batch Size of 128. 
+Accuracy: 0.8914, loss: 0.3255, train time: 2.30 Minutes. 
